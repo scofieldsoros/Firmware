@@ -227,22 +227,14 @@ sbus_decode(hrt_abstime frame_time, uint16_t *values, uint16_t *num_values, bool
 		case 0x00:
 		/* this is S.BUS 1 */
 		break;
-		case 0x03:
-		/* S.BUS 2 SLOT0: RX battery and external voltage */
-		break;
-		case 0x83:
-		/* S.BUS 2 SLOT1 */
-		break;
-		case 0x43:
-		case 0xC3:
-		case 0x23:
-		case 0xA3:
-		case 0x63:
-		case 0xE3:
+		case 0x04:
+		/* S.BUS 2 SLOTS */
+		case 0x14:
+		case 0x24:
+		case 0x34:
 		break;
 		default:
-		/* we expect one of the bits above, but there are some we don't know yet */
-		break;
+		return false;
 	}
 
 	/* we have received something we think is a frame */
