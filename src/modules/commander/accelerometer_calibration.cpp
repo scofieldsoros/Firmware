@@ -387,6 +387,7 @@ int detect_orientation(int mavlink_fd, int sub_sensor_combined)
 					accel_disp[i] = d;
 			}
 
+			printf("accel_disp[0] = %d;accel_disp[1] = %d;accel_disp[2] = %d\n",accel_disp[0],accel_disp[1],accel_disp[2]);
 			/* still detector with hysteresis */
 			if (accel_disp[0] < still_thr2 &&
 			    accel_disp[1] < still_thr2 &&
@@ -417,6 +418,7 @@ int detect_orientation(int mavlink_fd, int sub_sensor_combined)
 			}
 
 		} else if (poll_ret == 0) {
+			printf("poll_errcount = %d\n", poll_errcount);
 			poll_errcount++;
 		}
 
