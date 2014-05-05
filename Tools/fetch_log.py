@@ -113,7 +113,7 @@ def fetch_log(ser, fn, timeout):
     return "".join(data)
 
 def main():
-    dev = "/dev/tty.usbmodem1"
+    dev = "/dev/ttyACM0"
     ser = serial.Serial(dev, "115200", timeout=0.2)
     if len(sys.argv) < 2:
         print list_logs(ser)

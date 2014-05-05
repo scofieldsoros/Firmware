@@ -170,6 +170,7 @@ void get_mavlink_mode_state(struct vehicle_status_s *status, struct position_set
 
 	} else if (status->arming_state == ARMING_STATE_ARMED) {
 		*mavlink_state = MAV_STATE_ACTIVE;
+        fflush(stdout);
 
 	} else if (status->arming_state == ARMING_STATE_ARMED_ERROR) {
 		*mavlink_state = MAV_STATE_CRITICAL;

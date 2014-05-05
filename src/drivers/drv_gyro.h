@@ -47,7 +47,7 @@
 #include "drv_orb_dev.h"
 
 #define GYRO_DEVICE_PATH	"/dev/gyro"
-
+//#define GYRO_DEVICE_PATH	"/dev/gyro1"
 /**
  * gyro report structure.  Reads from the device must be in multiples of this
  * structure.

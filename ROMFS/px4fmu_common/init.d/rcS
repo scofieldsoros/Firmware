@@ -176,18 +176,23 @@ then
 	fi
 	
 	set IO_PRESENT no
-	set IOBOARD_EXIST no
 
+	#
+	# If NO IO board detected, set USE_IO no and save it to parameters
+	#
 	if px4io detect
 	then
-		set IOBOARD_EXIST yes
+		set USE_IO yes
+		param set SYS_USE_IO 1
+		param save
 		echo "px4io detected"
 	else
-		set IOBOARD_EXIST no
+		set USE_IO no
+		param set SYS_USE_IO 0
+		param save
 		echo "px4io NOT detected"
 
-
-	if [ $USE_IO == yes -a $IOBOARD_EXIST == yes ]
+	if [ $USE_IO == yes ]
 	then
 		#
 		# Check if PX4IO present and update firmware if needed

@@ -344,7 +344,7 @@ int detect_orientation(int mavlink_fd, int sub_sensor_combined)
 	/* EMA time constant in seconds*/
 	float ema_len = 0.5f;
 	/* set "still" threshold to 0.25 m/s^2 */
-	float still_thr2 = pow(0.25f, 2);
+	float still_thr2 = pow(0.5f, 2);
 	/* set accel error threshold to 5m/s^2 */
 	float accel_err_thr = 5.0f;
 	/* still time required in us */
@@ -362,7 +362,7 @@ int detect_orientation(int mavlink_fd, int sub_sensor_combined)
 	hrt_abstime t_still = 0;
 
 	unsigned poll_errcount = 0;
-
+	int count = 0;
 	while (true) {
 		/* wait blocking for new data */
 		int poll_ret = poll(fds, 1, 1000);
@@ -386,8 +386,12 @@ int detect_orientation(int mavlink_fd, int sub_sensor_combined)
 				if (d > accel_disp[i])
 					accel_disp[i] = d;
 			}
-
-			printf("accel_disp[0] = %d;accel_disp[1] = %d;accel_disp[2] = %d\n",accel_disp[0],accel_disp[1],accel_disp[2]);
+			count ++;
+			if(count % 1000 == 0)
+			{
+				mavlink_log_info(mavlink_fd, "[0] = %.2f;[01] = %.2f;[2] = %.2f", 
+					accel_disp[0],accel_disp[1],accel_disp[2]);
+			}	
 			/* still detector with hysteresis */
 			if (accel_disp[0] < still_thr2 &&
 			    accel_disp[1] < still_thr2 &&
@@ -418,7 +422,10 @@ int detect_orientation(int mavlink_fd, int sub_sensor_combined)
 			}
 
 		} else if (poll_ret == 0) {
-			printf("poll_errcount = %d\n", poll_errcount);
+			if(count % 1000 == 0)
+			{
+				mavlink_log_info(mavlink_fd, "poll_errcount = %d,count = %d", poll_errcount,count);
+			}	
 			poll_errcount++;
 		}
 

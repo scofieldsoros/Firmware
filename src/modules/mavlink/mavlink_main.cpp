@@ -1579,6 +1579,9 @@ MavlinkOrbSubscription *Mavlink::add_orb_subscription(const orb_id_t topic)
 	return sub_new;
 }
 
+/* if the stream of the name stream_name doesn't exist in the _stream and the
+ * interval > 0 ,create a instance of the stream and append it to the end of _stream .
+ * if the stream already exists in the _stream, just return OK  .LJXUAN*/
 int
 Mavlink::configure_stream(const char *stream_name, const float rate)
 {
@@ -1605,6 +1608,7 @@ Mavlink::configure_stream(const char *stream_name, const float rate)
 
 	if (interval > 0) {
 		/* search for stream with specified name in supported streams list */
+		/* stream_list : the several message classes defined in mavlink_messages.cpp*/
 		for (unsigned int i = 0; streams_list[i] != nullptr; i++) {
 			if (strcmp(stream_name, streams_list[i]->get_name()) == 0) {
 				/* create new instance */
@@ -1967,6 +1971,12 @@ Mavlink::task_main(int argc, char *argv[])
 		configure_stream("GLOBAL_POSITION_SETPOINT_INT", 3.0f * rate_mult);
 		configure_stream("ROLL_PITCH_YAW_THRUST_SETPOINT", 3.0f * rate_mult);
 		configure_stream("DISTANCE_SENSOR", 0.5f);
+		/* add servo output. still don't know why with IO board, this will added automatically 
+		 * the MavlinkStreamServoOutputRaw */
+		configure_stream("SERVO_OUTPUT_RAW_0", 1.0f);
+		configure_stream("SERVO_OUTPUT_RAW_1", 1.0f);
+		configure_stream("SERVO_OUTPUT_RAW_2", 1.0f);
+		configure_stream("SERVO_OUTPUT_RAW_3", 1.0f);
 		break;
 
 	case MAVLINK_MODE_CAMERA:
@@ -2032,10 +2042,12 @@ Mavlink::task_main(int argc, char *argv[])
 		}
 
 		/* update streams */
+		/* this is where all stream are updated and send to the QGC */
 		MavlinkStream *stream;
 		LL_FOREACH(_streams, stream) {
 			stream->update(t);
 		}
+
 
 		bool updated;
 		orb_check(mission_result_sub, &updated);
@@ -2103,6 +2115,7 @@ Mavlink::task_main(int argc, char *argv[])
 
 
 		perf_end(_loop_perf);
+
 	}
 
 	delete _subscribe_to_stream;

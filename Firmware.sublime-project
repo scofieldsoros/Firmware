@@ -33,7 +33,16 @@
 	{
 		"tab_size": 8,
 		"translate_tabs_to_spaces": false,
-	       "highlight_line": true
+	       "highlight_line": true,
+	       "sublimeclang_show_visual_error_marks": false,
+	       "sublimeclang_options":
+	       [
+	       		"-I/home/ljxuan/workspace/Firmware/src/",
+	       		"-I/home/ljxuan/workspace/Firmware/src/**",
+	       		"-I/home/ljxuan/workspace/Firmware/NuttX/nuttx/include/",
+	       		"-I/home/ljxuan/workspace/Firmware/NuttX/nuttx/include/nuttx/**",
+			"-I/home/ljxuan/workspace/Firmware/NuttX/nuttx/include/**"
+	       ]
 	},
 	"build_systems":
 	[

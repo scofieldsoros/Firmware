@@ -760,9 +760,9 @@ MPU6000::accel_self_test()
 int
 MPU6000::gyro_self_test()
 {
-	if (self_test())
+	if (self_test()){
 		return 1;
-
+	}
 	/* evaluate gyro offsets, complain if offset -> zero or larger than 6 dps */
 	if (fabsf(_gyro_scale.x_offset) > 0.1f || fabsf(_gyro_scale.x_offset) < 0.000001f)
 		return 1;
