@@ -452,6 +452,9 @@ args = parser.parse_args()
 # Load the firmware file
 fw = firmware(args.firmware)
 print("Loaded firmware for %x,%x, waiting for the bootloader..." % (fw.property('board_id'), fw.property('board_revision')))
+# added by ljxuan
+print("fireware info:")
+print("   build_time:",fw.property('build_time'),"\n   summary: ",fw.property('summary'),"\n   image_size:",fw.property('image_size'))
 
 # Spin waiting for a device to show up
 while True:
